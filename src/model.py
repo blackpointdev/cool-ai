@@ -74,6 +74,25 @@ def load_model(number_of_classes, parameters: LoaderParameters):
     return model
 
 
+def load_best_model(number_of_classes, parameters: LoaderParameters):
+    model = Sequential([
+        layers.experimental.preprocessing.Rescaling(1. / 255, input_shape=(parameters.img_height,
+                                                                           parameters.img_width, 3)),
+        layers.Conv2D(16, 3, padding='same', activation='relu'),
+        layers.MaxPooling2D(),
+        layers.Conv2D(32, 3, padding='same', activation='relu'),
+        layers.MaxPooling2D(),
+        layers.Conv2D(64, 3, padding='same', activation='relu'),
+        layers.MaxPooling2D(),
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(number_of_classes)
+    ])
+    model.load_weights('model_best/model_weights')
+
+    return model
+
+
 def compile_model(model):
     model.compile(optimizer='adam',
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),

@@ -6,7 +6,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
-from model import create_model, load_model
+from model import create_model, load_model, load_best_model
 from data import load_data, LoaderParameters
 
 if __name__ == '__main__':
@@ -41,8 +41,9 @@ if __name__ == '__main__':
 
     print("""
     Select option:
-        1. Create and train new model.
-        2. Load existing model (./model_weights).
+        1. Create and train new model (10 epochs).
+        2. Load last, existing model (./model_weights).
+        3. Load predefined model (20 epochs).
     """)
     while True:
         input_value = input("-> ")
@@ -51,6 +52,9 @@ if __name__ == '__main__':
             break
         elif input_value == '2':
             model = load_model(len(class_names), parameters)
+            break
+        elif input_value == '3':
+            model = load_best_model(len(class_names), parameters)
             break
         else:
             print("Incorrect input, try again.")
